@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
 function App() {
+  const[click,setClick] =React.useState(true)
+
+  const[windowWidth,setWindowWidth]=React.useState(window.innerWidth)
+  React.useEffect(()=>{
+    function watchWidth(){
+      setWindowWidth(window.innerWidth)
+    }
+    window.addEventListener("resize",watchWidth)
+    return function(){
+      window.removeEventListener("resize",watchWidth)
+    }
+  })
+  function handleClick(){
+  setClick(prevState=>!prevState)
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button className="button"
+      onClick={handleClick}>Toggle Window Tracker</button>
+      <br/>
+      {click && <h1 className="head">{windowWidth}</h1>}
+      
     </div>
   );
 }
